@@ -42,5 +42,19 @@ public class UserBiz extends BaseBiz<UserMapper,User> {
         return mapper.selectOne(user);
     }
 
+    /**
+     * 根据用户名获取用户信息
+     * @param username
+     * @return
+     */
+    public User getUserByUsername2(String username){
+        User user = new User();
+        user.setUsername(username);
+        try {
+            return mapper.selectOne(user);
+        }catch (Exception e){
+            return null;
+        }
+    }
 
 }

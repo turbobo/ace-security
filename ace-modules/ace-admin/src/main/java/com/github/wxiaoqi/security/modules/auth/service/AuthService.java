@@ -7,6 +7,9 @@ import java.util.Map;
 
 public interface AuthService {
     Map login(JwtAuthenticationRequest authenticationRequest) throws Exception;
+
+    Map signup(JwtAuthenticationRequest authenticationRequest) throws Exception;
+
     String refresh(String oldToken) throws Exception;
     void validate(String token) throws Exception;
 

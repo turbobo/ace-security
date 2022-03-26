@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -53,10 +54,30 @@ public class PermissionService {
 
     public UserInfo getUserByUsername(String username) {
         UserInfo info = new UserInfo();
-        User user = userBiz.getUserByUsername(username);
+        User user = userBiz.getUserByUsername2(username);
         BeanUtils.copyProperties(user, info);
         info.setId(user.getId().toString());
         return info;
+    }
+
+    /**
+     * 新增用户
+     * @param username
+     * @return
+     */
+    public UserInfo insertUser(String username, String password) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername(username);
+        //默认昵称就是登录名
+        userInfo.setName(username);
+        userInfo.setPassword(encoder.encode(password));
+        userInfo.setUpdTime(new Date());
+        User user = new User();
+        BeanUtils.copyProperties(userInfo, user);
+        userBiz.insert(user);
+//        BeanUtils.copyProperties(user, info);
+//        info.setId(user.getId().toString());
+        return userInfo;
     }
 
     public UserInfo validate(String username, String password) {

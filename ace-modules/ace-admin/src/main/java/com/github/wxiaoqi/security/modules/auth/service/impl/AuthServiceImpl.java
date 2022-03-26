@@ -10,6 +10,8 @@ import com.github.wxiaoqi.security.common.util.WebUtils;
 import com.github.wxiaoqi.security.common.util.jwt.IJWTInfo;
 import com.github.wxiaoqi.security.common.util.jwt.JWTInfo;
 import com.github.wxiaoqi.security.modules.admin.entity.OnlineLog;
+import com.github.wxiaoqi.security.modules.admin.entity.User;
+import com.github.wxiaoqi.security.modules.admin.mapper.UserMapper;
 import com.github.wxiaoqi.security.modules.admin.rpc.service.PermissionService;
 import com.github.wxiaoqi.security.modules.auth.service.AuthService;
 import com.github.wxiaoqi.security.modules.auth.util.user.JwtAuthenticationRequest;
@@ -21,6 +23,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.util.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,6 +40,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Value("${jwt.expire}")
     private int expire;
@@ -56,6 +62,34 @@ public class AuthServiceImpl implements AuthService {
             return result;
         }
         throw new UserInvalidException("用户不存在或账户密码错误!");
+    }
+
+    @Override
+    public Map signup(JwtAuthenticationRequest authenticationRequest) throws Exception {
+        //根据姓名查询人员
+        User user = userMapper.selectUserByUserName(authenticationRequest.getUsername());
+        if (user == null){
+            //保存新用户
+            UserInfo userInfo = permissionService.insertUser(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+            if (userInfo == null) {
+                throw new UserInvalidException("注册失败，请重试!");
+            }
+            return null;
+        }
+        throw new UserInvalidException("用户已存在!");
+        /*
+        UserInfo info = permissionService.validate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        if (!StringUtils.isEmpty(info.getId())) {
+            JWTInfo jwtInfo = new JWTInfo(info.getUsername(), info.getId() + "", info.getName());
+            String token = jwtTokenUtil.generateToken(jwtInfo);
+            Map<String, String> result = new HashMap<>();
+            result.put("accessToken", token);
+            result.put("id", info.id);
+            WebUtils.getRequest();
+            writeOnlineLog(jwtInfo);
+            return result;
+        }
+        throw new UserInvalidException("用户不存在或账户密码错误!");*/
     }
 
     @Override

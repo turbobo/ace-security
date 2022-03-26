@@ -45,4 +45,8 @@
     left join  base_group_leader gm
     on gm.user_id = u.id where gm.group_id = #{groupId}
   </select>
+  <select id="selectUserByUserName" resultType="com.github.wxiaoqi.security.modules.admin.entity.User">
+    select u.* from base_user u
+    where u.username = #{username}
+  </select>
 </mapper>
