@@ -12,4 +12,6 @@ public interface UserMapper extends Mapper<User> {
 
     public User selectUserByUserName(@Param("username") String username);
 
+    public void logicDeleteById(@Param("id") int id);
+
 }

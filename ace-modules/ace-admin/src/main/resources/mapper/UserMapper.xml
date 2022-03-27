@@ -16,6 +16,7 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="sex" jdbcType="CHAR" property="sex" />
     <result column="type" jdbcType="CHAR" property="type" />
+    <result column="status" jdbcType="CHAR" property="status" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="crt_time" jdbcType="DATE" property="crtTime" />
     <result column="crt_user" jdbcType="VARCHAR" property="crtUser" />
@@ -34,7 +35,13 @@
     <result column="attr7" jdbcType="VARCHAR" property="attr7" />
     <result column="attr8" jdbcType="VARCHAR" property="attr8" />
   </resultMap>
-  
+  <update id="logicDeleteById">
+    UPDATE base_user u
+    SET u.STATUS = '0'
+    WHERE
+      u.id = ${id};
+  </update>
+
   <select id="selectMemberByGroupId" resultMap="BaseResultMap">
     select u.* from base_user u
     left join  base_group_member gm

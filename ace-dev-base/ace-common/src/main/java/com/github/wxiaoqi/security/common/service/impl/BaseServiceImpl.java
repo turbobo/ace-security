@@ -4,12 +4,14 @@ import com.github.wxiaoqi.security.common.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import tk.mybatis.mapper.common.Mapper;
-
 import java.util.List;
 
 public class BaseServiceImpl<M extends Mapper<T>, T> implements BaseService<T> {
     @Autowired
     protected M mapper;
+
+//    @Autowired
+//    private UserMapper userMapper;
 
 
     @Override
@@ -26,6 +28,12 @@ public class BaseServiceImpl<M extends Mapper<T>, T> implements BaseService<T> {
 //    public List<T> selectListByIds(List<Object> ids) {
 //        return mapper.selectByIds(ids);
 //    }
+
+    @Override
+    public void logicDeleteById(Object id) {
+        int rowId = (int) id;
+//        userMapper.logicDeleteById(rowId);
+    }
 
     @Override
     public List<T> selectList(T entity) {

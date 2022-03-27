@@ -4,6 +4,7 @@ import com.github.wxiaoqi.security.common.biz.BaseBiz;
 import com.github.wxiaoqi.security.common.context.BaseContextHandler;
 import com.github.wxiaoqi.security.common.msg.ObjectRestResponse;
 import com.github.wxiaoqi.security.common.msg.TableResultResponse;
+import com.github.wxiaoqi.security.common.service.BaseService;
 import com.github.wxiaoqi.security.common.util.Query;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,8 @@ public class BaseController<Biz extends BaseBiz,Entity> {
     @ResponseBody
     public ObjectRestResponse<Entity> remove(@PathVariable int id){
         baseBiz.deleteById(id);
+        //逻辑删除
+//        baseService.logicDeleteById(id);
         return new ObjectRestResponse<Entity>();
     }
 

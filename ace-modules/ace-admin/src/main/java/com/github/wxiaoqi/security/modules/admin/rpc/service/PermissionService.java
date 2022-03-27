@@ -74,6 +74,8 @@ public class PermissionService {
         userInfo.setUpdTime(new Date());
         User user = new User();
         BeanUtils.copyProperties(userInfo, user);
+        //默认为启用状态
+        user.setStatus("1");
         userBiz.insert(user);
 //        BeanUtils.copyProperties(user, info);
 //        info.setId(user.getId().toString());

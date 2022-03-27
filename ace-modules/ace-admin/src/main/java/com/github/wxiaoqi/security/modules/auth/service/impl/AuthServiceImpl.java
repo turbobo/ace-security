@@ -110,6 +110,11 @@ public class AuthServiceImpl implements AuthService {
         stringRedisTemplate.opsForZSet().remove(RedisKeyConstant.REDIS_KEY_TOKEN, tokenId);
     }
 
+    @Override
+    public void logicDeleteById(int id) throws Exception {
+        userMapper.logicDeleteById(id);
+    }
+
     @Async
     public void writeOnlineLog(JWTInfo jwtInfo) {
         final UserAgent userAgent = UserAgent.parseUserAgentString(WebUtils.getRequest().getHeader("User-Agent"));
@@ -132,4 +137,5 @@ public class AuthServiceImpl implements AuthService {
         stringRedisTemplate.opsForValue().set(RedisKeyConstant.REDIS_KEY_TOKEN + ":" + jwtInfo.getTokenId(), JSON.toJSONString(onlineLog, false), expire, TimeUnit.MINUTES);
         stringRedisTemplate.opsForZSet().add((RedisKeyConstant.REDIS_KEY_TOKEN), jwtInfo.getTokenId(), 0);
     }
+
 }

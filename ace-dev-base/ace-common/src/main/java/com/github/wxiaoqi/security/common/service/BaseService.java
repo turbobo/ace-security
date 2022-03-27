@@ -94,6 +94,13 @@ public interface BaseService<T> {
      */
     void deleteById(Object id);
 
+    /**
+     * 根据Id 逻辑删除
+     *
+     * @param id
+     */
+    void logicDeleteById(Object id);
+
 
     /**
      * 根据id更新

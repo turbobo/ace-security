@@ -14,4 +14,6 @@ public interface AuthService {
     void validate(String token) throws Exception;
 
     void logout(String token) throws Exception;
+
+    void logicDeleteById(int id) throws Exception;
 }

@@ -1,5 +1,7 @@
 package com.github.wxiaoqi.security.modules.admin.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -30,9 +32,12 @@ public class User {
 
     private String type;
 
+    private String status;
+
     private String description;
 
     @Column(name = "crt_time")
+    @JsonFormat(timezone="GMT+8")
     private Date crtTime;
 
     @Column(name = "crt_user")
@@ -45,6 +50,7 @@ public class User {
     private String crtHost;
 
     @Column(name = "upd_time")
+    @JsonFormat(timezone="GMT+8")
     private Date updTime;
 
     @Column(name = "upd_user")
@@ -462,5 +468,13 @@ public class User {
      */
     public void setAttr8(String attr8) {
         this.attr8 = attr8;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

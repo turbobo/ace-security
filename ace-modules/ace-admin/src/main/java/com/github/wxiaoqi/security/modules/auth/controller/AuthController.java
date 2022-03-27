@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -90,5 +87,13 @@ public class AuthController {
         Map result = authService.signup(authenticationRequest);
 
         return new ObjectRestResponse<>().data(result);
+    }
+
+    @RequestMapping(value = "logic/{id}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public ObjectRestResponse<String> remove(@PathVariable int id) throws Exception {
+        //逻辑删除
+        authService.logicDeleteById(id);
+        return new ObjectRestResponse<String>();
     }
 }
