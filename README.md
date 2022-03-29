@@ -1,5 +1,25 @@
 ### Cloud-Platform
 
+
+####开发笔记
+● 后端返回数据类型需要为Json格式，否则vue无法获取
+● 返回方法加上@ResponseBody注解
+● 使用postman测试返回数据的格式
+● ObjectRestResponse 返回默认类型 -- vue可以解析的格式
+● TableResultResponse 返回列表数据类型 -- vue可以解析的格式
+● Mybatis开启驼峰标准命名配置：
+mybatis:
+    configuration:
+      map-underscore-to-camel-case: true
+
+**为了方便区分，字段映射需要加上@Column(name = "artist_name")来标识驼峰命名的字段
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------
 Cloud-Platform是国内首个基于`Spring 
 Cloud`微`服务`化`开发平台`，具有统一授权、认证后台管理系统，其中包含具备用户管理、资源权限管理、网关API
 管理等多个模块，支持多业务系统并行开发，可以作为后端服务的开发脚手架。代码简洁，架构清晰，适合学习和直接项目中使用。

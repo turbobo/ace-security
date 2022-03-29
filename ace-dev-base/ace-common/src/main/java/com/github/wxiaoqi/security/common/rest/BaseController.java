@@ -63,6 +63,12 @@ public class BaseController<Biz extends BaseBiz,Entity> {
     public ObjectRestResponse<List<Entity>> all(){
         return new ObjectRestResponse<>().data(baseBiz.selectListAll());
     }
+
+    /**
+     * 查询所有用户
+     * @param params
+     * @return
+     */
     @RequestMapping(value = "/page",method = RequestMethod.GET)
     @ResponseBody
     public TableResultResponse<Entity> list(@RequestParam Map<String, Object> params){

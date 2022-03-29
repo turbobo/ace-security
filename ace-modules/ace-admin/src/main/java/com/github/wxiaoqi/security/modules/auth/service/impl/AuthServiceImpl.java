@@ -1,16 +1,22 @@
 package com.github.wxiaoqi.security.modules.auth.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.wxiaoqi.security.api.vo.user.UserInfo;
 import com.github.wxiaoqi.security.common.constant.RedisKeyConstant;
 import com.github.wxiaoqi.security.common.exception.auth.UserInvalidException;
+import com.github.wxiaoqi.security.common.msg.TableResultResponse;
 import com.github.wxiaoqi.security.common.util.AddressUtils;
 import com.github.wxiaoqi.security.common.util.IpUtils;
+import com.github.wxiaoqi.security.common.util.Query;
 import com.github.wxiaoqi.security.common.util.WebUtils;
 import com.github.wxiaoqi.security.common.util.jwt.IJWTInfo;
 import com.github.wxiaoqi.security.common.util.jwt.JWTInfo;
 import com.github.wxiaoqi.security.modules.admin.entity.OnlineLog;
+import com.github.wxiaoqi.security.modules.admin.entity.PlayList;
 import com.github.wxiaoqi.security.modules.admin.entity.User;
+import com.github.wxiaoqi.security.modules.admin.mapper.PlayListMapper;
 import com.github.wxiaoqi.security.modules.admin.mapper.UserMapper;
 import com.github.wxiaoqi.security.modules.admin.rpc.service.PermissionService;
 import com.github.wxiaoqi.security.modules.auth.service.AuthService;
@@ -23,9 +29,12 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.util.StringUtil;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -43,6 +52,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private PlayListMapper playListMapper;
 
     @Value("${jwt.expire}")
     private int expire;
@@ -113,6 +125,35 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logicDeleteById(int id) throws Exception {
         userMapper.logicDeleteById(id);
+    }
+
+//    @Override
+//    public List<PlayList> getPlayLists(int limit, int offset){
+//
+//        return null;
+//    }
+
+    @Override
+    public TableResultResponse<PlayList> getPlayList(Query query) {
+//        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+//        Example example = new Example(clazz);
+//        if(query.entrySet().size()>0) {
+//            Example.Criteria criteria = example.createCriteria();
+//            for (Map.Entry<String, Object> entry : query.entrySet()) {
+//                criteria.andLike(entry.getKey(), "%" + entry.getValue().toString() + "%");
+//            }
+//        }
+
+
+        Page<Object> result = PageHelper.startPage(query.getPage(), query.getLimit());
+        List<PlayList> playList = playListMapper.getPlayList(query.getLimit(),query.getPage());
+        return new TableResultResponse<PlayList>(result.getTotal(), playList);
+    }
+
+    @Override
+    public List<PlayList> getPlayLists() {
+        List<PlayList> playList = playListMapper.getPlayLists();
+        return playList;
     }
 
     @Async

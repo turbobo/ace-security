@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.wxiaoqi.security.modules.admin.mapper.PlayListMapper">
+  <resultMap id="BaseResultMap" type="com.github.wxiaoqi.security.modules.admin.entity.PlayList">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user" jdbcType="INTEGER" property="user" />
+    <result column="song" jdbcType="INTEGER" property="song" />
+    <result column="play_count" jdbcType="INTEGER" property="playCount" />
+    <result column="track_id" jdbcType="VARCHAR" property="trackId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="release" jdbcType="VARCHAR" property="release" />
+    <result column="artitst_id" jdbcType="VARCHAR" property="artitstId" />
+    <result column="artist_name" jdbcType="VARCHAR" property="artistName" />
+    <result column="artist_hottness" jdbcType="DECIMAL" property="artistHottness" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="duration" jdbcType="REAL" property="duration" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, `user`, song, play_count, track_id, title, `release`, artitst_id, artist_name, 
+    artist_hottness, `year`, duration
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from play_list
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="getPlayList" resultType="com.github.wxiaoqi.security.modules.admin.entity.PlayList">
+    select
+    <include refid="Base_Column_List" />
+    from play_list
+    limit 0,5
+  </select>
+  <select id="getPlayLists" resultType="com.github.wxiaoqi.security.modules.admin.entity.PlayList">
+    select
+    <include refid="Base_Column_List" />
+    from play_list
+    limit 0,5
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from play_list
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.github.wxiaoqi.security.modules.admin.entity.PlayList" useGeneratedKeys="true">
+    insert into play_list (`user`, song, play_count, 
+      track_id, title, `release`, 
+      artitst_id, artist_name, artist_hottness, 
+      `year`, duration)
+    values (#{user,jdbcType=INTEGER}, #{song,jdbcType=INTEGER}, #{playCount,jdbcType=INTEGER}, 
+      #{trackId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{release,jdbcType=VARCHAR}, 
+      #{artitstId,jdbcType=VARCHAR}, #{artistName,jdbcType=VARCHAR}, #{artistHottness,jdbcType=DECIMAL}, 
+      #{year,jdbcType=INTEGER}, #{duration,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.github.wxiaoqi.security.modules.admin.entity.PlayList" useGeneratedKeys="true">
+    insert into play_list
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="user != null">
+        `user`,
+      </if>
+      <if test="song != null">
+        song,
+      </if>
+      <if test="playCount != null">
+        play_count,
+      </if>
+      <if test="trackId != null">
+        track_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="release != null">
+        `release`,
+      </if>
+      <if test="artitstId != null">
+        artitst_id,
+      </if>
+      <if test="artistName != null">
+        artist_name,
+      </if>
+      <if test="artistHottness != null">
+        artist_hottness,
+      </if>
+      <if test="year != null">
+        `year`,
+      </if>
+      <if test="duration != null">
+        duration,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="user != null">
+        #{user,jdbcType=INTEGER},
+      </if>
+      <if test="song != null">
+        #{song,jdbcType=INTEGER},
+      </if>
+      <if test="playCount != null">
+        #{playCount,jdbcType=INTEGER},
+      </if>
+      <if test="trackId != null">
+        #{trackId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="release != null">
+        #{release,jdbcType=VARCHAR},
+      </if>
+      <if test="artitstId != null">
+        #{artitstId,jdbcType=VARCHAR},
+      </if>
+      <if test="artistName != null">
+        #{artistName,jdbcType=VARCHAR},
+      </if>
+      <if test="artistHottness != null">
+        #{artistHottness,jdbcType=DECIMAL},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="duration != null">
+        #{duration,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.github.wxiaoqi.security.modules.admin.entity.PlayList">
+    update play_list
+    <set>
+      <if test="user != null">
+        `user` = #{user,jdbcType=INTEGER},
+      </if>
+      <if test="song != null">
+        song = #{song,jdbcType=INTEGER},
+      </if>
+      <if test="playCount != null">
+        play_count = #{playCount,jdbcType=INTEGER},
+      </if>
+      <if test="trackId != null">
+        track_id = #{trackId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="release != null">
+        `release` = #{release,jdbcType=VARCHAR},
+      </if>
+      <if test="artitstId != null">
+        artitst_id = #{artitstId,jdbcType=VARCHAR},
+      </if>
+      <if test="artistName != null">
+        artist_name = #{artistName,jdbcType=VARCHAR},
+      </if>
+      <if test="artistHottness != null">
+        artist_hottness = #{artistHottness,jdbcType=DECIMAL},
+      </if>
+      <if test="year != null">
+        `year` = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="duration != null">
+        duration = #{duration,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.github.wxiaoqi.security.modules.admin.entity.PlayList">
+    update play_list
+    set `user` = #{user,jdbcType=INTEGER},
+      song = #{song,jdbcType=INTEGER},
+      play_count = #{playCount,jdbcType=INTEGER},
+      track_id = #{trackId,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      `release` = #{release,jdbcType=VARCHAR},
+      artitst_id = #{artitstId,jdbcType=VARCHAR},
+      artist_name = #{artistName,jdbcType=VARCHAR},
+      artist_hottness = #{artistHottness,jdbcType=DECIMAL},
+      `year` = #{year,jdbcType=INTEGER},
+      duration = #{duration,jdbcType=REAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

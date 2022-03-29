@@ -44,6 +44,9 @@ mybatis:
     basepackage: com.github.wxiaoqi.security.admin.modules.mapper
     xmlLocation: classpath:mapper/**/*.xml
     mapper-locations: "classpath*:mapper/*.xml"
+#    开启驼峰标准命名配置
+    configuration:
+      map-underscore-to-camel-case: true
 
 server:
     port: 8762
