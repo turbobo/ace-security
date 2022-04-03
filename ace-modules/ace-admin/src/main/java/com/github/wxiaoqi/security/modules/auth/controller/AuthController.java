@@ -3,12 +3,14 @@ package com.github.wxiaoqi.security.modules.auth.controller;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.wxiaoqi.security.common.biz.BaseBiz;
 import com.github.wxiaoqi.security.common.constant.RedisKeyConstant;
 import com.github.wxiaoqi.security.common.exception.auth.UserInvalidException;
 import com.github.wxiaoqi.security.common.msg.ObjectRestResponse;
 import com.github.wxiaoqi.security.common.msg.TableResultResponse;
 import com.github.wxiaoqi.security.common.util.Query;
 import com.github.wxiaoqi.security.modules.admin.entity.PlayList;
+import com.github.wxiaoqi.security.modules.auth.biz.MusicBiz;
 import com.github.wxiaoqi.security.modules.auth.service.AuthService;
 import com.github.wxiaoqi.security.modules.auth.util.user.JwtAuthenticationRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +20,15 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 import static com.github.wxiaoqi.security.common.constant.RedisKeyConstant.REDIS_KEY_CAPTCHA;
 
 @RestController
 @RequestMapping("jwt")
 @Slf4j
-public class AuthController {
+public class AuthController<Biz extends BaseBiz,Entity> {
     @Autowired
     protected HttpServletRequest request;
 
@@ -104,7 +107,7 @@ public class AuthController {
         return new ObjectRestResponse<String>();
     }
 
-    @RequestMapping(value="top", method = RequestMethod.GET)
+    /*@RequestMapping(value="music/top", method = RequestMethod.GET)
     @ResponseBody
 //    public TableResultResponse<PlayList> getPlayList(@RequestParam(defaultValue = "10") int limit, @RequestParam(defaultValue = "1") int offset) {
     public TableResultResponse<PlayList> getPlayList(@RequestParam Map<String, Object> params) {
@@ -131,7 +134,7 @@ public class AuthController {
         //        return new TableResultResponse<>(stringRedisTemplate.opsForZSet().size(RedisKeyConstant.REDIS_KEY_TOKEN), playLists);
 
 
-/*        //查询列表数据
+*//*        //查询列表数据
         Map<String, Object> params = null;
         List<PlayList> playList = authService.getPlayList(limit,offset);
         Query query = new Query(params);
@@ -139,7 +142,7 @@ public class AuthController {
         query.setPage(1);
         //        return baseBiz.selectByQuery(query);
         Page<Object> result = PageHelper.startPage(query.getPage(), query.getLimit());
-        return new TableResultResponse<PlayList>(result.getTotal(), playList);*/
+        return new TableResultResponse<PlayList>(result.getTotal(), playList);*//*
 
         //查询列表数据
 //        Map<String, Object> params = new LinkedHashMap<>();
@@ -150,5 +153,21 @@ public class AuthController {
         List<PlayList> playLists = authService.getPlayLists();
         return  new TableResultResponse<PlayList>(playLists.size(), playLists);
 
-    }
+    }*/
+
+    @Autowired
+    protected MusicBiz musicBiz;
+
+    /**
+     * 查询所有歌曲
+     * @param params
+     * @return
+     */
+/*    @RequestMapping(value = "/music/page",method = RequestMethod.GET)
+    @ResponseBody
+    public TableResultResponse<Entity> getSongList(@RequestParam Map<String, Object> params){
+        //查询列表数据
+        Query query = new Query(params);
+        return (TableResultResponse<Entity>) musicBiz.selectByQuery(query);
+    }*/
 }

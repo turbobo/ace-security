@@ -24,7 +24,7 @@ public interface AuthService {
 //    List<PlayList> getPlayLists(int limit, int offset);
 
 //    TableResultResponse<PlayList> getPlayList(int limit, int offset, Query query);
-    TableResultResponse<PlayList> getPlayList(Query query);
+/*    TableResultResponse<PlayList> getPlayList(Query query);
 
-    List<PlayList> getPlayLists();
+    List<PlayList> getPlayLists();*/
 }

@@ -14,8 +14,9 @@ mybatis:
 
 **为了方便区分，字段映射需要加上@Column(name = "artist_name")来标识驼峰命名的字段
 
+**mysql保存0.1234567使用float,必须指定长度和小数长度float(8,7)
 
-
+**查看端口占用 netstat -aon|findstr "443"
 
 
 

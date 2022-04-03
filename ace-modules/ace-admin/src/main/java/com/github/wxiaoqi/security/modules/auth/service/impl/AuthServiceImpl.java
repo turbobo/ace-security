@@ -53,8 +53,8 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private PlayListMapper playListMapper;
+//    @Autowired
+//    private PlayListMapper playListMapper;
 
     @Value("${jwt.expire}")
     private int expire;
@@ -133,7 +133,7 @@ public class AuthServiceImpl implements AuthService {
 //        return null;
 //    }
 
-    @Override
+    /*@Override
     public TableResultResponse<PlayList> getPlayList(Query query) {
 //        Class<T> clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
 //        Example example = new Example(clazz);
@@ -145,16 +145,16 @@ public class AuthServiceImpl implements AuthService {
 //        }
 
 
-        Page<Object> result = PageHelper.startPage(query.getPage(), query.getLimit());
-        List<PlayList> playList = playListMapper.getPlayList(query.getLimit(),query.getPage());
-        return new TableResultResponse<PlayList>(result.getTotal(), playList);
-    }
+//        Page<Object> result = PageHelper.startPage(query.getPage(), query.getLimit());
+//        List<PlayList> playList = playListMapper.getPlayList(query.getLimit(),query.getPage());
+//        return new TableResultResponse<PlayList>(result.getTotal(), playList);
+    }*/
 
-    @Override
+/*    @Override
     public List<PlayList> getPlayLists() {
         List<PlayList> playList = playListMapper.getPlayLists();
         return playList;
-    }
+    }*/
 
     @Async
     public void writeOnlineLog(JWTInfo jwtInfo) {
