@@ -214,6 +214,7 @@ public class MusicController<Biz extends BaseBiz,Entity> {
 //                        tempRes.put("release", albumObj.get("albumName").toString());
                         songVo.setRelease(albumObj.get("albumName").toString());
                         songVo.setAlbumPic(albumObj.get("albumPic").toString());
+                        songVo.setPublicTime(albumObj.get("publicTime").toString());
                         break;
                     }
                     if (j == albumList.size() - 1) {
@@ -222,6 +223,7 @@ public class MusicController<Biz extends BaseBiz,Entity> {
 //                        tempRes.put("release", albumObj.get("albumName").toString());
                         songVo.setRelease(albumObj.get("albumName").toString());
                         songVo.setAlbumPic(albumObj.get("albumPic").toString());
+                        songVo.setPublicTime(albumObj.get("publicTime").toString());
                     }
                 }
 //                resultArray.add(tempRes);

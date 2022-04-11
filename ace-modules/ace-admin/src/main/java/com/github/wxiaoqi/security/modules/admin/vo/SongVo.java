@@ -35,6 +35,11 @@ public class SongVo {
      */
     private String albumPic;
 
+    /**
+     * 发布时间
+     */
+    private String publicTime;
+
     public String getTitle() {
         return title;
     }
@@ -73,5 +78,13 @@ public class SongVo {
 
     public void setAlbumPic(String albumPic) {
         this.albumPic = albumPic;
+    }
+
+    public String getPublicTime() {
+        return publicTime;
+    }
+
+    public void setPublicTime(String publicTime) {
+        this.publicTime = publicTime;
     }
 }
