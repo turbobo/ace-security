@@ -40,6 +40,16 @@ public class SongVo {
      */
     private String publicTime;
 
+    /**
+     * 播放量
+     */
+    private Long playcount;
+
+    /**
+     * 听众数量
+     */
+    private Long listeners;
+
     public String getTitle() {
         return title;
     }
@@ -86,5 +96,21 @@ public class SongVo {
 
     public void setPublicTime(String publicTime) {
         this.publicTime = publicTime;
+    }
+
+    public Long getPlaycount() {
+        return playcount;
+    }
+
+    public void setPlaycount(Long playcount) {
+        this.playcount = playcount;
+    }
+
+    public Long getListeners() {
+        return listeners;
+    }
+
+    public void setListeners(Long listeners) {
+        this.listeners = listeners;
     }
 }

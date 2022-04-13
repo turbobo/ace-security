@@ -16,7 +16,7 @@ mybatis:
 
 **mysql保存0.1234567使用float,必须指定长度和小数长度float(8,7)
 
-**查看端口占用 netstat -aon|findstr "8762"
+**查看端口占用 netstat -aon|findstr "8765"
 
 
 

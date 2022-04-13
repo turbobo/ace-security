@@ -186,6 +186,8 @@ public class MusicController<Biz extends BaseBiz,Entity> {
 //                tempRes.put("title", tempObj.get("name").toString());
 //                tempRes.put("artistName", artist.get("name").toString());
                 songVo.setTitle(tempObj.get("name").toString());
+                songVo.setPlaycount(Long.parseLong(tempObj.get("playcount").toString()));
+                songVo.setListeners(Long.parseLong(tempObj.get("listeners").toString()));
                 songVo.setArtistName(artist.get("name").toString());
 
           /*  //请求专辑封面
