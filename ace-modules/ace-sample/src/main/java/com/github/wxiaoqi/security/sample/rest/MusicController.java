@@ -1,4 +1,4 @@
-package com.github.wxiaoqi.security.modules.admin.rest;
+package com.github.wxiaoqi.security.sample.rest;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -11,12 +11,10 @@ import com.github.wxiaoqi.security.modules.admin.entity.PlayList;
 import com.github.wxiaoqi.security.modules.admin.util.HttpClientUtil;
 import com.github.wxiaoqi.security.modules.admin.util.HttpsClientUtil;
 import com.github.wxiaoqi.security.modules.admin.vo.SongVo;
-import com.github.wxiaoqi.security.modules.auth.biz.MusicBiz;
 import com.github.wxiaoqi.security.modules.auth.entity.Song;
-import com.github.wxiaoqi.security.modules.auth.service.MusicService;
+import com.github.wxiaoqi.security.sample.service.MusicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.endpoint.web.Link;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,9 +37,6 @@ public class MusicController<Biz extends BaseBiz,Entity> {
 
     @Autowired
     private MusicService musicService;
-
-    @Autowired
-    protected MusicBiz musicBiz;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -322,6 +317,7 @@ public class MusicController<Biz extends BaseBiz,Entity> {
     @ResponseBody
     public TableResultResponse<SongVo> getSimilarSongList(@RequestParam Map<String, Object> params) throws UnsupportedEncodingException {
         //返回集合
+        List<SongVo> topSongDurationListRedis = new LinkedList<>();
         String title = URLEncoder.encode((String) params.get("title"));
         String artistName = URLEncoder.encode((String) params.get("artistName"));
         String url = "http://ws.audioscrobbler.com/2.0/?method=track.getsimilar&artist=" + artistName +

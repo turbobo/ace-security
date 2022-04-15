@@ -1,9 +1,9 @@
 package com.github.wxiaoqi.security.modules.auth.biz;
 
 import com.github.wxiaoqi.security.common.biz.BaseBiz;
-import com.github.wxiaoqi.security.modules.auth.entity.Song;
-import com.github.wxiaoqi.security.modules.admin.util.Sha256PasswordEncoder;
 import com.github.wxiaoqi.security.modules.admin.mapper.SongMapper;
+import com.github.wxiaoqi.security.modules.admin.util.Sha256PasswordEncoder;
+import com.github.wxiaoqi.security.modules.auth.entity.Song;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

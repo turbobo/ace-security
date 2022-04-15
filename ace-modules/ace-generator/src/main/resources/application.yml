@@ -35,7 +35,7 @@ spring:
       name: Sample后端数据库
       url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/cloud_sample?useUnicode=true&characterEncoding=UTF8
       username: root
-      password: 123456
+      password: root
       # 使用druid数据源
       type: com.alibaba.druid.pool.DruidDataSource
       driver-class-name: com.mysql.jdbc.Driver

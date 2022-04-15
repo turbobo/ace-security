@@ -9,8 +9,6 @@ import com.github.wxiaoqi.security.common.exception.auth.UserInvalidException;
 import com.github.wxiaoqi.security.common.msg.ObjectRestResponse;
 import com.github.wxiaoqi.security.common.msg.TableResultResponse;
 import com.github.wxiaoqi.security.common.util.Query;
-import com.github.wxiaoqi.security.modules.admin.entity.PlayList;
-import com.github.wxiaoqi.security.modules.auth.biz.MusicBiz;
 import com.github.wxiaoqi.security.modules.auth.service.AuthService;
 import com.github.wxiaoqi.security.modules.auth.util.user.JwtAuthenticationRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -155,8 +153,8 @@ public class AuthController<Biz extends BaseBiz,Entity> {
 
     }*/
 
-    @Autowired
-    protected MusicBiz musicBiz;
+//    @Autowired
+//    protected MusicBiz musicBiz;
 
     /**
      * 查询所有歌曲

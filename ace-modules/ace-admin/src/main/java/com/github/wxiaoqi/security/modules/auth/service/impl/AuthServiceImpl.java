@@ -1,22 +1,16 @@
 package com.github.wxiaoqi.security.modules.auth.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.github.wxiaoqi.security.api.vo.user.UserInfo;
 import com.github.wxiaoqi.security.common.constant.RedisKeyConstant;
 import com.github.wxiaoqi.security.common.exception.auth.UserInvalidException;
-import com.github.wxiaoqi.security.common.msg.TableResultResponse;
 import com.github.wxiaoqi.security.common.util.AddressUtils;
 import com.github.wxiaoqi.security.common.util.IpUtils;
-import com.github.wxiaoqi.security.common.util.Query;
 import com.github.wxiaoqi.security.common.util.WebUtils;
 import com.github.wxiaoqi.security.common.util.jwt.IJWTInfo;
 import com.github.wxiaoqi.security.common.util.jwt.JWTInfo;
 import com.github.wxiaoqi.security.modules.admin.entity.OnlineLog;
-import com.github.wxiaoqi.security.modules.admin.entity.PlayList;
 import com.github.wxiaoqi.security.modules.admin.entity.User;
-import com.github.wxiaoqi.security.modules.admin.mapper.PlayListMapper;
 import com.github.wxiaoqi.security.modules.admin.mapper.UserMapper;
 import com.github.wxiaoqi.security.modules.admin.rpc.service.PermissionService;
 import com.github.wxiaoqi.security.modules.auth.service.AuthService;
@@ -29,12 +23,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.util.StringUtil;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 

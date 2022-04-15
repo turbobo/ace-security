@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.github.wxiaoqi.security.modules.admin.mapper.SongMapper">
-  <resultMap id="BaseResultMap" type="com.github.wxiaoqi.security.modules.auth.entity.Song">
+<mapper namespace="com.github.wxiaoqi.security.modules.admin.mapper.PlayListMapper">
+  <resultMap id="BaseResultMap" type="com.github.wxiaoqi.security.modules.admin.entity.PlayList">
     <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user" jdbcType="INTEGER" property="user" />
     <result column="song" jdbcType="INTEGER" property="song" />
     <result column="play_count" jdbcType="INTEGER" property="playCount" />
     <result column="track_id" jdbcType="VARCHAR" property="trackId" />
@@ -10,53 +11,52 @@
     <result column="release" jdbcType="VARCHAR" property="release" />
     <result column="artitst_id" jdbcType="VARCHAR" property="artitstId" />
     <result column="artist_name" jdbcType="VARCHAR" property="artistName" />
-    <result column="artist_hottness" jdbcType="REAL" property="artistHottness" />
+    <result column="artist_hottness" jdbcType="DECIMAL" property="artistHottness" />
     <result column="year" jdbcType="INTEGER" property="year" />
     <result column="duration" jdbcType="REAL" property="duration" />
-    <result column="status" jdbcType="CHAR" property="status" />
   </resultMap>
-  <update id="logicDeleteById">
-    UPDATE song s
-    SET s.status = '0'
-    WHERE
-      s.id = ${id};
-  </update>
-  <!--  <sql id="Base_Column_List">
-      id, song, play_count, track_id, title, `release`, artitst_id, artist_name, artist_hottness,
-      `year`, duration, status
-    </sql>-->
-  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
-    *
-    from song
+  <sql id="Base_Column_List">
+    id, `user`, song, play_count, track_id, title, `release`, artitst_id, artist_name, 
+    artist_hottness, `year`, duration
+  </sql>
+  <!--<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from play_list
     where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="getSongList" resultType="com.github.wxiaoqi.security.modules.auth.entity.Song">
+  </select>-->
+  <select id="getPlayList" resultType="com.github.wxiaoqi.security.modules.admin.entity.PlayList">
     select
-    *
-    from song
-    where status = '1'
+    <include refid="Base_Column_List" />
+    from play_list
+    limit 0,5
   </select>
-
+  <select id="getPlayLists" resultType="com.github.wxiaoqi.security.modules.admin.entity.PlayList">
+    select
+    <include refid="Base_Column_List" />
+    from play_list
+    limit 0,5
+  </select>
 <!--  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from song
+    delete from play_list
     where id = #{id,jdbcType=INTEGER}
   </delete>-->
-  <!--插入全部字段-->
-  <!--<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.github.wxiaoqi.security.modules.auth.entity.Song" useGeneratedKeys="true">
-    insert into song (song, play_count, track_id,
-      title, `release`, artitst_id,
-      artist_name, artist_hottness, `year`,
-      duration)
-    values (#{song,jdbcType=INTEGER}, #{playCount,jdbcType=INTEGER}, #{trackId,jdbcType=VARCHAR},
-      #{title,jdbcType=VARCHAR}, #{release,jdbcType=VARCHAR}, #{artitstId,jdbcType=VARCHAR},
-      #{artistName,jdbcType=VARCHAR}, #{artistHottness,jdbcType=REAL}, #{year,jdbcType=INTEGER},
-      #{duration,jdbcType=REAL})
-  </insert>-->
-  <!--判断字段非空插入-->
-  <insert id="insertSelectiveMine" keyColumn="id" keyProperty="id" parameterType="com.github.wxiaoqi.security.modules.auth.entity.Song" useGeneratedKeys="true">
-    insert into song
+<!--  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.github.wxiaoqi.security.modules.admin.entity.PlayList" useGeneratedKeys="true">
+    insert into play_list (`user`, song, play_count, 
+      track_id, title, `release`, 
+      artitst_id, artist_name, artist_hottness, 
+      `year`, duration)
+    values (#{user,jdbcType=INTEGER}, #{song,jdbcType=INTEGER}, #{playCount,jdbcType=INTEGER}, 
+      #{trackId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{release,jdbcType=VARCHAR}, 
+      #{artitstId,jdbcType=VARCHAR}, #{artistName,jdbcType=VARCHAR}, #{artistHottness,jdbcType=DECIMAL}, 
+      #{year,jdbcType=INTEGER}, #{duration,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.github.wxiaoqi.security.modules.admin.entity.PlayList" useGeneratedKeys="true">
+    insert into play_list
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="user != null">
+        `user`,
+      </if>
       <if test="song != null">
         song,
       </if>
@@ -87,11 +87,11 @@
       <if test="duration != null">
         duration,
       </if>
-      <if test="status != null">
-        status,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="user != null">
+        #{user,jdbcType=INTEGER},
+      </if>
       <if test="song != null">
         #{song,jdbcType=INTEGER},
       </if>
@@ -114,7 +114,7 @@
         #{artistName,jdbcType=VARCHAR},
       </if>
       <if test="artistHottness != null">
-        #{artistHottness,jdbcType=REAL},
+        #{artistHottness,jdbcType=DECIMAL},
       </if>
       <if test="year != null">
         #{year,jdbcType=INTEGER},
@@ -122,18 +122,14 @@
       <if test="duration != null">
         #{duration,jdbcType=REAL},
       </if>
-      <if test="status != null">
-        #{status,jdbcType=CHAR},
-      </if>
-      <if test="status == null">
-        '1',
-      </if>
     </trim>
   </insert>
-
-  <update id="updateSelectiveByEntity" parameterType="com.github.wxiaoqi.security.modules.auth.entity.Song">
-    update song
+  <update id="updateByPrimaryKeySelective" parameterType="com.github.wxiaoqi.security.modules.admin.entity.PlayList">
+    update play_list
     <set>
+      <if test="user != null">
+        `user` = #{user,jdbcType=INTEGER},
+      </if>
       <if test="song != null">
         song = #{song,jdbcType=INTEGER},
       </if>
@@ -156,7 +152,7 @@
         artist_name = #{artistName,jdbcType=VARCHAR},
       </if>
       <if test="artistHottness != null">
-        artist_hottness = #{artistHottness,jdbcType=REAL},
+        artist_hottness = #{artistHottness,jdbcType=DECIMAL},
       </if>
       <if test="year != null">
         `year` = #{year,jdbcType=INTEGER},
@@ -167,17 +163,17 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-  <!--<update id="updateByPrimaryKey" parameterType="com.github.wxiaoqi.security.modules.auth.entity.Song">
-    update song
-    set song = #{song,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.github.wxiaoqi.security.modules.admin.entity.PlayList">
+    update play_list
+    set `user` = #{user,jdbcType=INTEGER},
+      song = #{song,jdbcType=INTEGER},
       play_count = #{playCount,jdbcType=INTEGER},
       track_id = #{trackId,jdbcType=VARCHAR},
       title = #{title,jdbcType=VARCHAR},
       `release` = #{release,jdbcType=VARCHAR},
       artitst_id = #{artitstId,jdbcType=VARCHAR},
       artist_name = #{artistName,jdbcType=VARCHAR},
-      artist_hottness = #{artistHottness,jdbcType=REAL},
+      artist_hottness = #{artistHottness,jdbcType=DECIMAL},
       `year` = #{year,jdbcType=INTEGER},
       duration = #{duration,jdbcType=REAL}
     where id = #{id,jdbcType=INTEGER}

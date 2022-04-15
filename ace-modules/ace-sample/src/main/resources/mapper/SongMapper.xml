@@ -26,7 +26,7 @@
       `year`, duration, status
     </sql>-->
   <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     *
     from song
     where id = #{id,jdbcType=INTEGER}
@@ -44,13 +44,13 @@
   </delete>-->
   <!--插入全部字段-->
   <!--<insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.github.wxiaoqi.security.modules.auth.entity.Song" useGeneratedKeys="true">
-    insert into song (song, play_count, track_id,
-      title, `release`, artitst_id,
-      artist_name, artist_hottness, `year`,
+    insert into song (song, play_count, track_id, 
+      title, `release`, artitst_id, 
+      artist_name, artist_hottness, `year`, 
       duration)
-    values (#{song,jdbcType=INTEGER}, #{playCount,jdbcType=INTEGER}, #{trackId,jdbcType=VARCHAR},
-      #{title,jdbcType=VARCHAR}, #{release,jdbcType=VARCHAR}, #{artitstId,jdbcType=VARCHAR},
-      #{artistName,jdbcType=VARCHAR}, #{artistHottness,jdbcType=REAL}, #{year,jdbcType=INTEGER},
+    values (#{song,jdbcType=INTEGER}, #{playCount,jdbcType=INTEGER}, #{trackId,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{release,jdbcType=VARCHAR}, #{artitstId,jdbcType=VARCHAR}, 
+      #{artistName,jdbcType=VARCHAR}, #{artistHottness,jdbcType=REAL}, #{year,jdbcType=INTEGER}, 
       #{duration,jdbcType=REAL})
   </insert>-->
   <!--判断字段非空插入-->

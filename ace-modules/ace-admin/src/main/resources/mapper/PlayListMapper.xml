@@ -16,11 +16,11 @@
     <result column="duration" jdbcType="REAL" property="duration" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, `user`, song, play_count, track_id, title, `release`, artitst_id, artist_name, 
+    id, `user`, song, play_count, track_id, title, `release`, artitst_id, artist_name,
     artist_hottness, `year`, duration
   </sql>
   <!--<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from play_list
     where id = #{id,jdbcType=INTEGER}
@@ -42,13 +42,13 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>-->
 <!--  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.github.wxiaoqi.security.modules.admin.entity.PlayList" useGeneratedKeys="true">
-    insert into play_list (`user`, song, play_count, 
-      track_id, title, `release`, 
-      artitst_id, artist_name, artist_hottness, 
+    insert into play_list (`user`, song, play_count,
+      track_id, title, `release`,
+      artitst_id, artist_name, artist_hottness,
       `year`, duration)
-    values (#{user,jdbcType=INTEGER}, #{song,jdbcType=INTEGER}, #{playCount,jdbcType=INTEGER}, 
-      #{trackId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{release,jdbcType=VARCHAR}, 
-      #{artitstId,jdbcType=VARCHAR}, #{artistName,jdbcType=VARCHAR}, #{artistHottness,jdbcType=DECIMAL}, 
+    values (#{user,jdbcType=INTEGER}, #{song,jdbcType=INTEGER}, #{playCount,jdbcType=INTEGER},
+      #{trackId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{release,jdbcType=VARCHAR},
+      #{artitstId,jdbcType=VARCHAR}, #{artistName,jdbcType=VARCHAR}, #{artistHottness,jdbcType=DECIMAL},
       #{year,jdbcType=INTEGER}, #{duration,jdbcType=REAL})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.github.wxiaoqi.security.modules.admin.entity.PlayList" useGeneratedKeys="true">
