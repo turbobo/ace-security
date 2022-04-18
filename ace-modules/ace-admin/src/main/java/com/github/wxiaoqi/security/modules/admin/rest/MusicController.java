@@ -360,7 +360,7 @@ public class MusicController<Biz extends BaseBiz,Entity> {
                     songVo.setAlbumPic(albumObj.get("albumPic").toString());
                 } else {
                     //没有专辑信息
-                    songVo.setAlbumPic("@/assets/logo/MusicRec.png");
+                    songVo.setAlbumPic("");
                 }
                 result.add(songVo);
             }
