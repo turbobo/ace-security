@@ -8,6 +8,7 @@
 ● ObjectRestResponse 返回默认类型 -- vue可以解析的格式
 ● TableResultResponse 返回列表数据类型 -- vue可以解析的格式
 ● Mybatis开启驼峰标准命名配置：
+
 mybatis:
     configuration:
       map-underscore-to-camel-case: true
@@ -18,6 +19,8 @@ mybatis:
 
 **查看端口占用 netstat -aon|findstr "8765"
 
+
+修改用户信息后，要清除redis
 
 
 --------------------------------------------------------------------------------------------------------
