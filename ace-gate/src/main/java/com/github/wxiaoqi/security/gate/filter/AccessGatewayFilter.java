@@ -113,7 +113,8 @@ public class AccessGatewayFilter implements GlobalFilter {
                 }
                 ServerHttpRequest build = mutate.build();
                 return gatewayFilterChain.filter(serverWebExchange.mutate().request(build).build());
-            } else {
+            }
+            else {
                 // 当前用户不具有访问权限
                 return getVoidMono(serverWebExchange, new TokenForbiddenResponse("Forbidden!Does not has Permission!"), HttpStatus.FORBIDDEN);
             }

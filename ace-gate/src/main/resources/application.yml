@@ -104,7 +104,7 @@ management:
 
 gate:
   ignore:
-    startWith: /auth/jwt,/auth/captcha
+    startWith: /auth/jwt,/auth/captcha    #忽略拦截路径
 
 
 auth:

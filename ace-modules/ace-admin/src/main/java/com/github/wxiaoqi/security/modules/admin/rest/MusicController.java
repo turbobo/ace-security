@@ -61,9 +61,17 @@ public class MusicController<Biz extends BaseBiz,Entity> {
         //查询列表数据
         Query query = new Query(params);
 //        return (TableResultResponse<Entity>) musicBiz.selectByQuery(query);
-
+        query.put("page",params.get("page"));
+        query.put("limit",params.get("limit"));
         List<Song> songList = musicService.getSongList(query);
-        return new TableResultResponse<Song>(songList.size(), songList);
+        int page = query.getPage();
+        int limit = query.getLimit();
+        int start = (page -1) * page;
+        int end = start + limit;
+        if (end > songList.size()) {
+            end = songList.size();
+        }
+        return new TableResultResponse<Song>(songList.size(), songList.subList(start,end));
     }
 
     /**
@@ -228,17 +236,17 @@ public class MusicController<Biz extends BaseBiz,Entity> {
 //                JSONArray o = (JSONArray) jsonArray.get(i);
                 String title = URLEncoder.encode(songVo.getTitle(), "utf-8");
                 String artistName = URLEncoder.encode(songVo.getArtistName(), "utf-8");
-                String url = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=7537459f592d916b49e697b8a0fb53df&artist="
-                        + artistName + "&track="
-                        + title  + "&format=json";
-                String jsonStr = "{xxx}";
-                String httpOrgCreateTestRtn = HttpClientUtil.doPost(url, jsonStr, "utf-8");
-                JSONObject jsonObject = JSONObject.parseObject(httpOrgCreateTestRtn);
-                JSONObject track = (JSONObject) jsonObject.get("track");
-                if (track != null) {
-                    songVo.setPlaycount(Long.parseLong(track.get("playcount").toString()));
-                    songVo.setListeners(Long.parseLong(track.get("listeners").toString()));
-                }
+//                String url = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=7537459f592d916b49e697b8a0fb53df&artist="
+//                        + artistName + "&track="
+//                        + title  + "&format=json";
+//                String jsonStr = "{xxx}";
+//                String httpOrgCreateTestRtn = HttpClientUtil.doPost(url, jsonStr, "utf-8");
+//                JSONObject jsonObject = JSONObject.parseObject(httpOrgCreateTestRtn);
+//                JSONObject track = (JSONObject) jsonObject.get("track");
+//                if (track != null) {
+//                    songVo.setPlaycount(Long.parseLong(track.get("playcount").toString()));
+//                    songVo.setListeners(Long.parseLong(track.get("listeners").toString()));
+//                }
 //                SongVo songVo = new SongVo();
 //                songVo.setTitle(o.get(0).toString());
 //                songVo.setRelease(o.get(1).toString());
@@ -272,7 +280,7 @@ public class MusicController<Biz extends BaseBiz,Entity> {
                     }
                 }
 
-                //获取时长
+                /*//获取时长
                 String url_duration = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp?p=1&n=2&w=" + title + "&format=json";
                 JSONObject songObjectList = HttpsClientUtil.getHttpsReq(url_duration);
                 JSONObject data = (JSONObject) songObjectList.get("data");
@@ -303,7 +311,7 @@ public class MusicController<Biz extends BaseBiz,Entity> {
                             }
                         }
                     }
-                }
+                }*/
                 songVoLinkedListRes.add(songVo);
             }
             //存入redis
@@ -316,6 +324,82 @@ public class MusicController<Biz extends BaseBiz,Entity> {
         }
         return new TableResultResponse<SongVo>(songVoLinkedListRes.size(), songVoLinkedListRes);
 
+    }
+
+
+    @RequestMapping(value="/personalizedAll", method = RequestMethod.GET)
+    @ResponseBody
+//    public TableResultResponse<PlayList> getPlayList(@RequestParam(defaultValue = "10") int limit, @RequestParam(defaultValue = "1") int offset) {
+    public TableResultResponse<SongVo> getPersonalizedSongAll(@RequestParam Map<String, Object> params) throws IOException {
+        //返回集合
+        List<SongVo> songsSaveListRedisAll = new LinkedList<>();
+        String userName = (String) params.get("userName");
+        //python推荐结果
+        String songsSaveAll = stringRedisTemplate.opsForValue().get("songsSaveAll"+userName);
+
+        if (songsSaveAll == null){
+            String songsSave = stringRedisTemplate.opsForValue().get("songsSave"+userName);
+            List<SongVo> songsSaveListRedis = JSON.parseArray(songsSave, SongVo.class);
+            for (int i = 0; i < songsSaveListRedis.size(); i++) {
+                SongVo songVo = songsSaveListRedis.get(i);
+                //获取播放量
+                String title = URLEncoder.encode(songVo.getTitle(), "utf-8");
+                String artistName = URLEncoder.encode(songVo.getArtistName(), "utf-8");
+                String url = "http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=7537459f592d916b49e697b8a0fb53df&artist="
+                        + artistName + "&track="
+                        + title + "&format=json";
+                String jsonStr = "{xxx}";
+                String httpOrgCreateTestRtn = HttpClientUtil.doPost(url, jsonStr, "utf-8");
+                JSONObject jsonObject = JSONObject.parseObject(httpOrgCreateTestRtn);
+                JSONObject track = (JSONObject) jsonObject.get("track");
+                if (track != null) {
+                    songVo.setPlaycount(Long.parseLong(track.get("playcount").toString()));
+                    songVo.setListeners(Long.parseLong(track.get("listeners").toString()));
+                }
+
+                //获取时长
+                String url_duration = "https://c.y.qq.com/soso/fcgi-bin/client_search_cp?p=1&n=2&w=" + title + "&format=json";
+                JSONObject songObjectList = HttpsClientUtil.getHttpsReq(url_duration);
+                JSONObject data = (JSONObject) songObjectList.get("data");
+                if (data != null) {
+                    JSONObject song = (JSONObject) data.get("song");
+                    if (song != null) {
+                        JSONArray songList = song.getJSONArray("list");
+                        for (int l = 0; l < songList.size(); l++) {  //匹配歌曲
+                            JSONObject jsonObject1 = (JSONObject) songList.get(l);
+                            JSONArray singer = jsonObject1.getJSONArray("singer");
+                            for (int m = 0; m < singer.size(); m++) {  //匹配歌手
+                                JSONObject o2 = (JSONObject) singer.get(m);
+                                if (o2.get("name").equals(songVo.getArtistName())) {
+        //                                tempRes.put("duration", jsonObject1.get("interval"));
+                                    songVo.setDuration((Integer) jsonObject1.get("interval"));
+                                    break;
+                                }
+                            }
+
+                            //匹配不到，则使用第一个专辑：已经最后一个，还没匹配到
+                            if (l == songList.size() - 1) {
+                                jsonObject1 = (JSONObject) songList.get(0);
+        //                            tempRes.put("duration", jsonObject1.get("interval"));
+                                songVo.setDuration((Integer) jsonObject1.get("interval"));
+                            }
+                            if (songVo.getDuration() != null) {
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                //songVo原有数据仍保留
+                songsSaveListRedisAll.add(songVo);
+            }
+            //存入redis
+            stringRedisTemplate.opsForValue().set("songsSaveAll"+userName, JSON.toJSONString(songsSaveListRedisAll), 12, TimeUnit.HOURS);
+        } else {
+            songsSaveListRedisAll = JSON.parseArray(songsSaveAll, SongVo.class);
+        }
+
+        return new TableResultResponse<SongVo>(songsSaveListRedisAll.size(), songsSaveListRedisAll);
     }
 
     //请求热门歌曲列表，并保存至redis
@@ -476,7 +560,7 @@ public class MusicController<Biz extends BaseBiz,Entity> {
         } else {
             topSongDurationListRedis = JSON.parseArray(topSongDurationStringRedis, SongVo.class);
         }
-        return  new TableResultResponse<SongVo>(topSongDurationListRedis.size(), topSongDurationListRedis);
+        return new TableResultResponse<SongVo>(topSongDurationListRedis.size(), topSongDurationListRedis);
     }
 
     //请求相似歌曲列表，并保存至redis
@@ -492,9 +576,20 @@ public class MusicController<Biz extends BaseBiz,Entity> {
         String httpOrgCreateTestRtn = HttpClientUtil.doPost(url, jsonStr, "utf-8");
         JSONObject jsonObject = JSONObject.parseObject(httpOrgCreateTestRtn);
         JSONObject similartracks = (JSONObject) jsonObject.get("similartracks");
-        JSONArray track = similartracks.getJSONArray("track");
+        JSONArray track = null;
+        boolean artistGettoptracks = false;
+        if (similartracks == null){
+            artistGettoptracks = true;
+        } else {
+            track = similartracks.getJSONArray("track");
+            if (track==null ||track.size() == 0){
+                artistGettoptracks = true;
+            }
+        }
+//        JSONArray track = similartracks.getJSONArray("track");
+
         List<SongVo> result = new LinkedList<>();
-        if (track.size() == 0){
+        if (artistGettoptracks){
             ////未找到相似歌曲，则查找该艺术家的热门歌曲
             //http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist='+ this.songVo.artistName + '&api_key=7537459f592d916b49e697b8a0fb53df&format=json
             String url2 = "http://ws.audioscrobbler.com/2.0/?method=artist.gettoptracks&artist=" + artistName +"&api_key=7537459f592d916b49e697b8a0fb53df&format=json&t=8";

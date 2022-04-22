@@ -9,8 +9,10 @@ import com.github.wxiaoqi.security.common.util.IpUtils;
 import com.github.wxiaoqi.security.common.util.WebUtils;
 import com.github.wxiaoqi.security.common.util.jwt.IJWTInfo;
 import com.github.wxiaoqi.security.common.util.jwt.JWTInfo;
+import com.github.wxiaoqi.security.modules.admin.biz.GroupBiz;
 import com.github.wxiaoqi.security.modules.admin.entity.OnlineLog;
 import com.github.wxiaoqi.security.modules.admin.entity.User;
+import com.github.wxiaoqi.security.modules.admin.mapper.GroupMapper;
 import com.github.wxiaoqi.security.modules.admin.mapper.UserMapper;
 import com.github.wxiaoqi.security.modules.admin.rpc.service.PermissionService;
 import com.github.wxiaoqi.security.modules.auth.service.AuthService;
@@ -42,6 +44,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private GroupMapper groupMapper;
+
+    @Autowired
+    protected GroupBiz groupBiz;
 
 //    @Autowired
 //    private PlayListMapper playListMapper;
@@ -76,6 +84,9 @@ public class AuthServiceImpl implements AuthService {
             if (userInfo == null) {
                 throw new UserInvalidException("注册失败，请重试!");
             }
+//            UserInfo userInfo1 = permissionService.getUserByUsername(userInfo.getUsername());
+            //默认保存为  音乐用户 组id为 10
+//            groupMapper.insertGroupMembersById(10,Integer.parseInt(userInfo1.getId()));
             return null;
         }
         throw new UserInvalidException("用户已存在!");

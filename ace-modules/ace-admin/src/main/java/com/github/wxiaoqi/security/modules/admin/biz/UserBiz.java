@@ -31,6 +31,13 @@ public class UserBiz extends BaseBiz<UserMapper,User> {
         super.updateSelectiveById(entity);
     }
 
+
+    public void updateUserPassById(User entity) {
+        String password = encoder.encode(entity.getPassword());
+        entity.setPassword(password);
+        super.updateSelectiveById(entity);
+    }
+
     /**
      * 根据用户名获取用户信息
      * @param username
@@ -50,6 +57,7 @@ public class UserBiz extends BaseBiz<UserMapper,User> {
     public User getUserByUsername2(String username){
         User user = new User();
         user.setUsername(username);
+        user.setStatus("1");
         try {
             return mapper.selectOne(user);
         }catch (Exception e){

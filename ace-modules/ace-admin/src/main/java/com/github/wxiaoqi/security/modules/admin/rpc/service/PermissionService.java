@@ -243,7 +243,8 @@ public class PermissionService {
         frontUser.setAccessHeader(header);
         frontUser.setAccessRoutes(accessRoutes);
         frontUser.setUserPermissions(permissions);
-        frontUser.setUserName(user.getName());
+        frontUser.setUserName(user.getUsername());
+        frontUser.setName(user.getName());
         frontUser.setAccessInterfaces(interfaces);
         //TODO 待接入头像附件上传服务
         frontUser.setAvatarUrl("https://api.adorable.io/avatars/85/abott@adorable.png");

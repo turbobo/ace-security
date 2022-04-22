@@ -83,7 +83,11 @@ public abstract class BaseBiz<M extends Mapper<T>, T> {
     public void updateSelectiveById(T entity) {
         EntityUtils.setUpdatedInfo(entity);
         mapper.updateByPrimaryKeySelective(entity);
+    }
 
+    public void updateUserPassById(T entity) {
+        EntityUtils.setUpdatedInfo(entity);
+        mapper.updateByPrimaryKeySelective(entity);
     }
 
     public List<T> selectByExample(Object example) {

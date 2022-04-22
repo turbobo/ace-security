@@ -15,9 +15,14 @@ public class FrontUserV2 {
      */
     public String avatarUrl;
     /**
-     * 昵称
+     * 登录名
      */
     public String userName;
+
+    /*
+    * 昵称
+    * */
+    private String name;
     /**
      * 角色列表
      */

@@ -5,6 +5,7 @@ import com.github.wxiaoqi.security.common.context.BaseContextHandler;
 import com.github.wxiaoqi.security.common.msg.ObjectRestResponse;
 import com.github.wxiaoqi.security.common.msg.TableResultResponse;
 import com.github.wxiaoqi.security.common.util.Query;
+//import com.github.wxiaoqi.security.modules.admin.util.Sha256PasswordEncoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,9 +27,12 @@ public class BaseController<Biz extends BaseBiz,Entity> {
     @Autowired
     protected Biz baseBiz;
 
+//    private Sha256PasswordEncoder encoder = new Sha256PasswordEncoder();
+
     @RequestMapping(value = "",method = RequestMethod.POST)
     @ResponseBody
     public ObjectRestResponse<Entity> add(@RequestBody Entity entity){
+//        encoder.encode(password);
         baseBiz.insertSelective(entity);
         return new ObjectRestResponse<Entity>();
     }
@@ -48,6 +52,14 @@ public class BaseController<Biz extends BaseBiz,Entity> {
         baseBiz.updateSelectiveById(entity);
         return new ObjectRestResponse<Entity>();
     }
+
+    @RequestMapping(value = "/updatePass/{id}",method = RequestMethod.PUT)
+    @ResponseBody
+    public ObjectRestResponse<Entity> updatePass(@RequestBody Entity entity){
+        baseBiz.updateUserPassById(entity);
+        return new ObjectRestResponse<Entity>();
+    }
+
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
     @ResponseBody
     public ObjectRestResponse<Entity> remove(@PathVariable int id){
@@ -73,6 +85,8 @@ public class BaseController<Biz extends BaseBiz,Entity> {
     public TableResultResponse<Entity> list(@RequestParam Map<String, Object> params){
         //查询列表数据
         Query query = new Query(params);
+//        query.put("page",params.get("page"));
+//        query.put("limit",params.get("limit"));
         return baseBiz.selectByQuery(query);
     }
     public String getCurrentUserName(){

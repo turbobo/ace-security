@@ -35,6 +35,7 @@ public class MusicServiceImpl implements MusicService {
     public List<Song> getSongList(Query query) {
 //        Page<Object> result = PageHelper.startPage(query.getPage(), query.getLimit());
         List<Song> songList = songMapper.getSongList();
+
         return songList;
     }
 

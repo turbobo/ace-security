@@ -28,14 +28,16 @@ package com.github.wxiaoqi.security.modules.admin.util;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * 老干爹 on 2017/8/11.
  */
 public class Sha256PasswordEncoder implements PasswordEncoder {
 
-    @Override
+    /*@Override
     public String encode(CharSequence charSequence) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -44,10 +46,56 @@ public class Sha256PasswordEncoder implements PasswordEncoder {
         } catch (Exception e) {
             return null;
         }
+    }*/
+
+    /**
+     * 修改密码加密方式
+     * @param charSequence
+     * @return
+     */
+    @Override
+    public String encode(CharSequence charSequence) {
+        MessageDigest messageDigest;
+        String encodeStr = "";
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(charSequence.toString().getBytes(StandardCharsets.UTF_8));
+            encodeStr = byte2Hex(messageDigest.digest());
+            return encodeStr;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
     public boolean matches(CharSequence charSequence, String s) {
         return this.encode(charSequence.toString()).equals(s);
+    }
+
+    public static void main(String[] args) {
+        String str = "admin";
+        MessageDigest messageDigest;
+        String encodeStr = "";
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(str.getBytes(StandardCharsets.UTF_8));
+            encodeStr = byte2Hex(messageDigest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String byte2Hex(byte[] bytes) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String temp;
+        for (byte aByte : bytes) {
+            temp = Integer.toHexString(aByte & 0xFF);
+            if (temp.length() == 1) {
+                //1得到一位的进行补0操作
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(temp);
+        }
+        return stringBuilder.toString();
     }
 }
